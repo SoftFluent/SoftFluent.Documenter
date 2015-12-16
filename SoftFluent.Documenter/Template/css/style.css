@@ -1,4 +1,5 @@
-.summary {
+#summary {
+    margin-top: 10px;
     background-color: #fafafa;
     margin-bottom: 10px;
 }
@@ -47,12 +48,15 @@ p {
     word-wrap: break-word;
     overflow: hidden;
     color: #333;
-    line-height: 1.7;
     font-size: 1.6rem;
+    margin-bottom:.85em;
+    line-height: 1.7 !important;
+}
+h1,h2,p,li{
+    line-height: 1.7;
 }
 
 * {
-    line-height: 1.7 !important;
     border-radius: 0 !important;
 }
 
@@ -74,13 +78,16 @@ hr {
     padding-right: 0;
 }
 
-ul.nav.nav-pills ul.nav {
-    margin-left: 10px;
+#header{
+    margin-bottom:20px;
+}
+#summary ol.nav ol.nav {
+    margin-left: 20px;
 }
 
-    ul.nav.nav-pills ul.nav ul.nav {
-        margin-left: 10px;
-    }
+    /*#summary ol.nav ol.nav ol.nav {
+        margin-left: 20px;
+    }*/
 
 @media (min-width: 1200px) {
     .centered {
