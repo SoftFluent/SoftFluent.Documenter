@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoftFluent.Documenter", "SoftFluent.Documenter.csproj", "{1BD1A4C1-43E5-4F62-B8C7-1F23E62DD71A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoftFluent.Documenter", "SoftFluent.Documenter\SoftFluent.Documenter.csproj", "{1BD1A4C1-43E5-4F62-B8C7-1F23E62DD71A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoftFluent.Documenter.Client", "..\SoftFluent.Documenter.Client\SoftFluent.Documenter.Client.csproj", "{841B6E86-3913-4B16-9084-7C7E349199AC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoftFluent.Documenter.Client", "SoftFluent.Documenter.Client\SoftFluent.Documenter.Client.csproj", "{841B6E86-3913-4B16-9084-7C7E349199AC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
