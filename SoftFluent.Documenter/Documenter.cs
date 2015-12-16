@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+using CodeFluent.Runtime.Utilities;
 
 namespace SoftFluent.Documenter
 {
@@ -18,31 +16,37 @@ namespace SoftFluent.Documenter
         {
             if (Directory.Exists(renderingPath))
             {
-                CodeFluent.Runtime.Utilities.IOUtilities.DirectoryDelete(renderingPath, true);
+                IOUtilities.DirectoryDelete(renderingPath, true);
             }
+
             Directory.CreateDirectory(renderingPath);
 
             if (!Directory.Exists(string.Concat(renderingPath, "/css")))
             {
                 Directory.CreateDirectory(string.Concat(renderingPath, "/css"));
             }
+
             if (!Directory.Exists(string.Concat(renderingPath, "/js")))
             {
                 Directory.CreateDirectory(string.Concat(renderingPath, "/js"));
             }
+
             if (!Directory.Exists(string.Concat(renderingPath, "/img")))
             {
                 Directory.CreateDirectory(string.Concat(renderingPath, "/img"));
             }
+
             // copy template ressources
             foreach (string filePath in Directory.GetFiles("Template/css"))
             {
                 File.Copy(filePath, string.Concat(renderingPath, "/css/", Path.GetFileName(filePath)));
             }
+
             foreach (string filePath in Directory.GetFiles("Template/js"))
             {
                 File.Copy(filePath, string.Concat(renderingPath, "/js/", Path.GetFileName(filePath)));
             }
+
             foreach (string filePath in Directory.GetFiles("Template/img"))
             {
                 File.Copy(filePath, string.Concat(renderingPath, "/img/", Path.GetFileName(filePath)));
@@ -73,13 +77,11 @@ namespace SoftFluent.Documenter
         private string InitSummaryContent(string sourcePath)
         {
             string result = Markdown.ToHtml(File.ReadAllText(string.Concat(sourcePath, "/", "SUMMARY.md")));
-
             result = result.Replace(".md", ".html");
             result = result.Replace("<ul>", "<ol>");
             result = result.Replace("</ul>", "</ol>");
             result = result.Replace("<ol>", "<ol class=\"nav nav-pills nav-stacked\">");
             result = result.Replace("<h1 id=\"summary\">Summary</h1>", "");
-
             return result;
         }
 
