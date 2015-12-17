@@ -12,7 +12,7 @@
 <body>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-4 col-md-3 splitted col-plain">
+            <div id="left-panel" class="col-sm-4 col-md-3 splitted col-plain">
                 <div id="header" class="text-center">
                     <a href="http://www.softfluent.com" target="_blank">
                         <img class="logo" src="{{BASE}}img/logo_softfluent.svg" />
@@ -22,12 +22,22 @@
                 </div>
                 <div id="summary">
                     {{SUMMARY}}
+                    <ul id="products" class="nav nav-pills nav-stacked text-right">
+                        <li class="divider"></li>
+                        <li><a href="http://www.softfluent.com/product/sharePoint-list-synchronizer/" target="_blank">SharePoint List Syncronizer</a></li>
+                        <li><a href="http://www.softfluent.com/product/logtomail/" target="_blank">LogToMail</a></li>
+                        <li><a href="http://www.softfluent.com/product/softfluent-windows-utilities/" target="_blank">SoftFluent Windows Utilities</a></li>
+                    </ul>
                 </div>
             </div>
             <div class="col-sm-8 col-md-9 splitted">
                 <section class="gallery col-md-12 col-lg-10 centered">
+                    <div class="previous"><a href="#">&larr;</a></div>
+                    <div class="next"><a href="#">&rarr;</a></div>
                     <h1 class="text-center"><small>CodeFluent Entities Documentation</small></h1>
                     {{CONTENT}}
+                    <div class="previous"><a href="#">&larr;</a></div>
+                    <div class="next"><a href="#">&rarr;</a></div>
                     <hr />
                     <small>
                         Copyright &copy; 2005-2016 SoftFluent S.A.S. All Rights Reserved. CodeFluent Entities.<br />
@@ -46,9 +56,34 @@
 
     <script>
         $(function () {
-            //if ($.fn.simpleLightbox) {
-            var gallery = $('.gallery a').simpleLightbox();
-            //}
+            if ($.fn.simpleLightbox) {
+                var gallery = $('.gallery a').simpleLightbox();
+            }
+            
+            $('#left-panel').scrollTop($('.nav .active').offset().top - 100);
+
+            if ($('#summary ol.nav li:first').is('.active')) {
+                $('.previous a').hide();
+            }
+            if ($('#summary ol.nav li:last').is('.active')) {
+                $('.next a').hide();
+            }
+            $('.previous a').click(function () {
+                var summaryItems = $('#summary ol.nav li');
+                for (i = 0; i < summaryItems.length; i++) {
+                    if ($(summaryItems[i]).hasClass('active')) {
+                        window.location = $(summaryItems[i-1]).find('a').attr('href');
+                    }
+                }
+            });
+            $('.next a').click(function () {
+                var summaryItems = $('#summary ol.nav li');
+                for (i = 0; i < summaryItems.length; i++) {
+                    if ($(summaryItems[i]).hasClass('active')) {
+                        window.location = $(summaryItems[i + 1]).find('a').attr('href');
+                    }
+                }
+            });
         });
     </script>
 </body>

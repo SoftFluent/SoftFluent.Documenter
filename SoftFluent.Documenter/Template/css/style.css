@@ -49,10 +49,11 @@ p {
     overflow: hidden;
     color: #333;
     font-size: 1.6rem;
-    margin-bottom:.85em;
+    margin-bottom: .85em;
     line-height: 1.7 !important;
 }
-h1,h2,p,li{
+
+h1, h2, p, li {
     line-height: 1.7;
 }
 
@@ -71,6 +72,7 @@ hr {
     overflow: hidden;
     background-color: #e7e7e7;
     border: none;
+    clear:both;
 }
 
 .col-plain {
@@ -78,14 +80,15 @@ hr {
     padding-right: 0;
 }
 
-#header{
-    margin-bottom:20px;
+#header {
+    margin-bottom: 20px;
 }
+
 #summary ol.nav ol.nav {
     margin-left: 20px;
 }
 
-    /*#summary ol.nav ol.nav ol.nav {
+/*#summary ol.nav ol.nav ol.nav {
         margin-left: 20px;
     }*/
 
@@ -120,32 +123,56 @@ pre {
     height: 40px !important;
 }
 
+li.active > a:before {
+    color: white;
+}
+
 ol {
     counter-reset: section;
     list-style-type: none;
 }
 
-li a:before {
-    counter-increment: section;
-    content: counters(section, ".") " ";
-    font-weight: bold !important;
-    padding: 0 10px;
-    color: #23527c;
+    ol li a:before {
+        counter-increment: section;
+        content: counters(section, ".") " ";
+        font-weight: bold !important;
+        float: left;
+        padding: 0 10px;
+        color: #23527c;
+    }
+
+    ol ol li a:before {
+        counter-increment: section;
+        content: counters(section, ".") " ";
+        font-weight: bold !important;
+    }
+
+
+.nav .divider {
+    height: 1px;
+    background-color: #eee;
 }
 
-li.active > a:before {
-    color: white;
+#products {
+    font-variant: small-caps;
 }
 
-ol li a:before {
-    counter-increment: section;
-    content: counters(section, ".") " ";
-    font-weight: bold !important;
+
+.previous,
+.next {
+    font-size: 32px !important;
+    font-weight: bold;
+}
+
+    .previous a:hover,
+    .next a:hover {
+        text-decoration: none !important;
+    }
+
+.previous {
     float: left;
 }
 
-ol ol li a:before {
-    counter-increment: section;
-    content: counters(section, ".") " ";
-    font-weight: bold !important;
+.next {
+    float: right;
 }

@@ -120,6 +120,9 @@ namespace SoftFluent.Documenter
                     string htmlContent = Markdown.ToHtml(content);
                     htmlContent = htmlContent.Replace("<table>", "<table class=\"table table-bordered table-striped\">");
                     htmlContent = htmlContent.Replace(".md", ".html");
+                    htmlContent = htmlContent.Replace("href=\"http", "target=\"_blank\" href=\"http");
+                    htmlContent = new Regex("<h2 id=\"([^\"]*)\">").Replace(htmlContent, "<a href=\"#$1\"><h2 id=\"$1\">");
+                    htmlContent = htmlContent.Replace("</h2>", "</h2></a>");
                     htmlContent = new Regex("<p><img src=\"([^\"]*)\" alt=\"([^\"]*)\"></p>").Replace(htmlContent, "<p class=\"text-center\"><a href=\"$1\"><img src=\"$1\" alt=\"$2\"></a></p>");
                     fileContent = fileContent.Replace("{{CONTENT}}", htmlContent);
 
