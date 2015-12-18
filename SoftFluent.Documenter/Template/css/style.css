@@ -72,7 +72,7 @@ hr {
     overflow: hidden;
     background-color: #e7e7e7;
     border: none;
-    clear:both;
+    clear: both;
 }
 
 .col-plain {
@@ -84,8 +84,12 @@ hr {
     margin-bottom: 20px;
 }
 
-#summary ol.nav ol.nav {
-    margin-left: 20px;
+#summary ol.nav ol.nav li a {
+    padding-left: 32px;
+}
+
+#summary ol.nav ol.nav li ol.nav li a {
+    padding-left: 48px;
 }
 
 /*#summary ol.nav ol.nav ol.nav {
@@ -175,4 +179,26 @@ ol {
 
 .next {
     float: right;
+}
+
+.toggler {
+    position: absolute;
+    z-index: 200;
+    right: 10px;
+    top: 8px;
+    padding: 6px 12px;
+}
+
+    .toggler i {
+        color: #337ab7;
+        transform: rotate(90deg);
+        transition: all 0.2s ease;
+    }
+
+    .toggler.active i {
+        transform: rotate(-90deg);
+    }
+
+li.active > span i {
+    color: white;
 }
