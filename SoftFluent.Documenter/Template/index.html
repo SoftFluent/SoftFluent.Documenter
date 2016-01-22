@@ -32,8 +32,8 @@
             </div>
             <div class="col-sm-8 col-md-9 splitted">
                 <section class="gallery col-md-12 col-lg-10 centered">
-                    <div class="previous"><a href="#">&larr;</a></div>
-                    <div class="next"><a href="#">&rarr;</a></div>
+                    <!--<div class="previous"><a href="#">&larr;</a></div>
+                    <div class="next"><a href="#">&rarr;</a></div>-->
                     <h1 class="text-center"><small>CodeFluent Entities Documentation</small></h1>
                     {{CONTENT}}
                     <div class="previous"><a href="#">&larr;</a></div>
@@ -85,35 +85,35 @@
                 }
             });
 
-            $('ol li:has(ol)').each(function (i, el) {
-                var toggler = $('<span class="toggler"><i class="glyphicon glyphicon-play"></i></span>');
-                $(this).append(toggler);
-                //data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
-                $(this).find('> span').attr("data-toggle", "collapse");
-                $(this).find('> span').attr("data-parent", "summary");
+            //$('#summary ol li:has(ol)').each(function (i, el) {
+            //    var toggler = $('<span class="toggler"><i class="glyphicon glyphicon-play"></i></span>');
+            //    $(this).append(toggler);
+            //    //data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
+            //    $(this).find('> span').attr("data-toggle", "collapse");
+            //    $(this).find('> span').attr("data-parent", "summary");
 
-                var href = "#" + $(this).find('> a').attr("href").replace("..", "").replace(".html", "").replace(/\//g, "-");
-                $(this).find('> span').attr("href", href);
-                $(this).find('> ol').attr("id", href);
-                $(this).find('> ol').wrap('<div id="' + href + '" class="collapse"/>');
-                var self = this;
-                $(this).find('> span').click(function () { $(this).toggleClass('active'); $(self).find('> div').collapse('toggle'); });
-            });
+            //    var href = "#" + $(this).find('> a').attr("href").replace("..", "").replace(".html", "").replace(/\//g, "-");
+            //    $(this).find('> span').attr("href", href);
+            //    $(this).find('> ol').attr("id", href);
+            //    $(this).find('> ol').wrap('<div id="' + href + '" class="collapse"/>');
+            //    var self = this;
+            //    $(this).find('> span').click(function () { $(this).toggleClass('active'); $(self).find('> div').collapse('toggle'); });
+            //});
 
-            var activeSummaryItem = $('#summary li.active');
-            if ($(activeSummaryItem).parent().parent().attr('id') != "summary") {
+            //var activeSummaryItem = $('#summary li.active');
+            //if ($(activeSummaryItem).parent().parent().attr('id') != "summary") {
 
-                $(activeSummaryItem).closest('div').addClass('in');
-                $(activeSummaryItem).closest('div').parent().find('> .toggler').addClass('active');
+            //    $(activeSummaryItem).closest('div').addClass('in');
+            //    $(activeSummaryItem).closest('div').parent().find('> .toggler').addClass('active');
 
-            }
-            if ($(activeSummaryItem).find('> .toggler').length == 0) {
-                $(activeSummaryItem).closest('div').parent().closest('div').addClass('in');
-                $(activeSummaryItem).closest('div').parent().closest('div').parent().find('> .toggler').addClass('active');
-            } else {
-                $(activeSummaryItem).find('> div').addClass('in');
-                $(activeSummaryItem).find('> .toggler').addClass('active');
-            }
+            //}
+            //if ($(activeSummaryItem).find('> .toggler').length == 0) {
+            //    $(activeSummaryItem).closest('div').parent().closest('div').addClass('in');
+            //    $(activeSummaryItem).closest('div').parent().closest('div').parent().find('> .toggler').addClass('active');
+            //} else {
+            //    $(activeSummaryItem).find('> div').addClass('in');
+            //    $(activeSummaryItem).find('> .toggler').addClass('active');
+            //}
         });
     </script>
 </body>

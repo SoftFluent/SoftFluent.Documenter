@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using CodeFluent.Runtime.Utilities;
+using System.Xml;
 
 namespace SoftFluent.Documenter
 {
@@ -85,13 +86,128 @@ namespace SoftFluent.Documenter
             return result;
         }
 
+        private XmlNode GetNewToggler(XmlDocument xmlDocument)
+        {
+            //    var toggler = $('<span class="toggler"><i class="glyphicon glyphicon-play"></i></span>');
+            XmlNode toggler = xmlDocument.CreateNode(XmlNodeType.Element, "span", "");
+            XmlAttribute togglerClass = xmlDocument.CreateAttribute("class");
+            togglerClass.Value = "toggler";
+            toggler.Attributes.Append(togglerClass);
+            //    $(this).find('> span').attr("data-toggle", "collapse");
+            XmlAttribute togglerDataToggle = xmlDocument.CreateAttribute("data-toggle");
+            togglerDataToggle.Value = "collapse";
+            toggler.Attributes.Append(togglerDataToggle);
+            //    $(this).find('> span').attr("data-parent", "summary");
+            XmlAttribute togglerDataParent = xmlDocument.CreateAttribute("data-parent");
+            togglerDataParent.Value = "summary";
+            toggler.Attributes.Append(togglerDataParent);
+            XmlAttribute togglerHref = xmlDocument.CreateAttribute("href");
+            togglerHref.Value = "";
+            toggler.Attributes.Append(togglerHref);
+            XmlNode icon = xmlDocument.CreateNode(XmlNodeType.Element, "i", "");
+            XmlAttribute iconClass = xmlDocument.CreateAttribute("class");
+            iconClass.Value = "glyphicon glyphicon-play";
+            icon.Attributes.Append(iconClass);
+            toggler.AppendChild(icon);
+
+            return toggler;
+        }
         private string LocateSummaryContent(string content, string fileName, string basePath, string pathLevelPath)
         {
             string finalBasePath = basePath.Replace("html", "").Trim('/');
             content = content.Replace("<li><a href=\"", "<li><a href=\"" + pathLevelPath);
             content = content.Replace("<li><a href=\"" + pathLevelPath + (finalBasePath.Length > 0 ? finalBasePath + "/" : "") + fileName, "<li class=\"active\"><a href=\"" + pathLevelPath + (finalBasePath.Length > 0 ? finalBasePath + "/" : "") + fileName);
             content = content.Replace("README.html", "index.html");
-            return content;
+
+            // activate opened nodes
+            XmlDocument xmlDocument = new XmlDocument();
+            xmlDocument.LoadXml(content);
+
+
+            // $('#summary ol li:has(ol)').each(function (i, el) {
+            XmlNodeList items = xmlDocument.SelectNodes("ol//li");
+            int itemsCount = items.Count;
+            for (int i = 0; i < itemsCount; i++)
+            {
+                XmlNode item = items[i];
+                if (item.SelectNodes("./ol").Count > 0)
+                {
+                    //    $(this).append(toggler);
+                    XmlNode toggler = GetNewToggler(xmlDocument);
+                    item.AppendChild(toggler);
+
+                    //    var href = "#" + $(this).find('> a').attr("href").replace("..", "").replace(".html", "").replace(/\//g, "-");
+                    string href = "#" + item.SelectSingleNode("./a").Attributes["href"].Value.Replace("..", "").Replace(".html", "").Replace("/", "-");
+                    //    $(this).find('> span').attr("href", href);
+                    toggler.Attributes["href"].Value = href;
+                    //    $(this).find('> ol').attr("id", href);
+                    XmlNode itemSubMenu = item.SelectSingleNode("./ol");
+                    XmlAttribute itemSubMenuId = xmlDocument.CreateAttribute("id");
+                    itemSubMenuId.Value = href;
+                    itemSubMenu.Attributes.Append(itemSubMenuId);
+
+                    //    $(this).find('> ol').wrap('<div id="' + href + '" class="collapse"/>');
+                    XmlNode itemSubMenuWrapper = xmlDocument.CreateElement("div");
+                    XmlAttribute itemSubMenuWrapperId = xmlDocument.CreateAttribute("id");
+                    itemSubMenuWrapperId.Value = href;
+                    itemSubMenuWrapper.Attributes.Append(itemSubMenuWrapperId);
+                    XmlAttribute itemSubMenuWrapperClass = xmlDocument.CreateAttribute("class");
+                    itemSubMenuWrapperClass.Value = "collapse";
+                    itemSubMenuWrapper.Attributes.Append(itemSubMenuWrapperClass);
+                    itemSubMenuWrapper.AppendChild(itemSubMenu);
+                    item.InsertBefore(itemSubMenuWrapper, toggler);
+                    items = xmlDocument.SelectNodes("ol//li");
+                    //    var self = this;
+                    //    $(this).find('> span').click(function () { $(this).toggleClass('active'); $(self).find('> div').collapse('toggle'); });
+                    XmlAttribute togglerOnclick = xmlDocument.CreateAttribute("onclick");
+                    togglerOnclick.Value = "$(this).toggleClass('active'); $(this).parent().find('> div').collapse('toggle');";
+                    toggler.Attributes.Append(togglerOnclick);
+                }
+            }
+            //});
+
+            //var activeSummaryItem = $('#summary li.active');
+            XmlNode activeSummaryItem = xmlDocument.SelectSingleNode("//li[contains(@class,'active')]");
+            //if ($(activeSummaryItem).parent().parent().attr('id') != "summary") {
+            if (activeSummaryItem != null)
+            {
+                if (activeSummaryItem.ParentNode.ParentNode.Name != "#document")
+                {
+                    //    $(activeSummaryItem).closest('div').addClass('in');
+                    activeSummaryItem.ParentNode.ParentNode.Attributes["class"].Value += " in";
+                    //    $(activeSummaryItem).closest('div').parent().find('> .toggler').addClass('active');
+                    activeSummaryItem.ParentNode.ParentNode.ParentNode.SelectSingleNode("./span").Attributes["class"].Value += " active";
+                    //if ($(activeSummaryItem).find('> .toggler').length == 0) {
+
+                    if (activeSummaryItem.SelectNodes("./span").Count == 0)
+                    {
+                        //    $(activeSummaryItem).closest('div').parent().closest('div').addClass('in');
+                        if (activeSummaryItem.ParentNode.ParentNode.ParentNode.ParentNode.ParentNode.LocalName != "#document")
+                        {
+                            activeSummaryItem.ParentNode.ParentNode.ParentNode.ParentNode.ParentNode.Attributes["class"].Value += " in";
+                            //    $(activeSummaryItem).closest('div').parent().closest('div').parent().find('> .toggler').addClass('active');
+                            activeSummaryItem.ParentNode.ParentNode.ParentNode.ParentNode.ParentNode.ParentNode.SelectSingleNode("./span").Attributes["class"].Value += " active";
+                        }
+                    }
+                    else//} else {
+                    {
+                        //    $(activeSummaryItem).find('> div').addClass('in');
+                        activeSummaryItem.SelectSingleNode("./div").Attributes["class"].Value += " in";
+                        //    $(activeSummaryItem).find('> .toggler').addClass('active');
+                        activeSummaryItem.SelectSingleNode("./span").Attributes["class"].Value += " active";
+                    }
+                    //}
+                }
+                else if (activeSummaryItem.SelectNodes("./span").Count > 0)
+                {
+                    activeSummaryItem.SelectSingleNode("./div").Attributes["class"].Value += " in";
+                    activeSummaryItem.SelectSingleNode("./span").Attributes["class"].Value += " active";
+                }
+            }
+            //}
+
+
+            return xmlDocument.OuterXml.Replace("<i class=\"glyphicon glyphicon-play\" />", "<i class=\"glyphicon glyphicon-play\"></i>");
         }
 
         private bool RecursiveRendering(string sourcePath, string basePath)
